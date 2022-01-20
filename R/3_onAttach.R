@@ -2,9 +2,9 @@
 #' @importFrom magrittr %>%
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage(paste0(
-    "PACKAGE ",
-    # utils::packageDescription("PACKAGE")$Version,
+    "nowcast ",
+    # utils::packageDescription("nowcast")$Version,
     "\n",
-    "https://docs.sykdomspulsen.no/PACKAGE"
+    "https://docs.sykdomspulsen.no/nowcast"
   ))
 }
