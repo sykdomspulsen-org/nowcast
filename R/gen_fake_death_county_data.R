@@ -60,8 +60,8 @@ gen_fake_death_data_county <- function() {
                                                                                                  "county54") & year == 2021]
   pop_data[, pop_frac:= pop/5312753 ]
 
-  skeleton[, year := isoyear_n(date)]
-  skeleton[, week := isoweek(date)]
+  skeleton[, year := isoyear_n_temp(date)]
+  skeleton[, week := isoweek_n_temp(date)]
 
   ranef <- data.table(location_code = location_code,
                       location_intercept = c(-0.18, -0.21, 0.04, 0.13, -0.05, 0.25, 0.10, -0.01, -0.06, -0.4, 0.3))

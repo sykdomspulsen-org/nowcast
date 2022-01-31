@@ -264,8 +264,8 @@ nowcast_aggregate <- function(
                  paste0("p0_",(i-1)) := temp_variable_p]
   }
 
-  d_corrected[, week := isoweek(cut_doe)]
-  d_corrected[, year := isoyear_n(cut_doe)]
+  d_corrected[, week := isoweek_n_temp(cut_doe)]
+  d_corrected[, year := isoyear_n_temp(cut_doe)]
   if(!is.null(pop_data)){
     if ("week" %in% colnames(pop_data)){
       d_corrected[pop_data, pop := pop, on = c("year", "week", "location_code")]

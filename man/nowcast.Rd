@@ -38,7 +38,7 @@ When there is a lag in the reception of data nowcast can be used to correct for 
 }
 \details{
 For more details see the help vignette:
-\code{vignette("nowcast", package="nowcast")}
+\code{vignette("nowcast", package="attrib")}
 }
 \examples{
 

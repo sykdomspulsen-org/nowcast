@@ -38,6 +38,8 @@ fit_attrib <- function(
   offset = NULL) {
 
 
+  # fit_attrib(data = data, response = response, fixef = fixef, ranef = ranef, offset = offset, dist_family = 'negbin')
+
   if (is.data.table(data) == FALSE) {
     stop("The dataset is not a data table")
   }

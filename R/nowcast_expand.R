@@ -158,7 +158,9 @@ nowcast_correction_fn_negbin_mm <- function(data, n_week_adjusting, offset, date
     ranef <- "(1| location_code)"
 
     response <- "n_death"
+    # default is poisson
     fit <- fit_attrib(data_train, response= response, fixef=fixef, ranef=ranef, offset= offset, dist_family = "negbin")
+    # fit <- fit_attrib(data_train, response= response, fixef=fixef, ranef=ranef, offset= offset)
 
     n_cor <- round(stats::predict(fit, newdata = data, type = "response"))
     data[, glue::glue("ncor0_{i}"):= n_cor]
@@ -403,7 +405,7 @@ nowcast_correction_sim_neg_bin <- function(nowcast_correction_object, offset, n_
 #'  and predict the true underlying values.
 #'
 #' For more details see the help vignette:
-#' \code{vignette("nowcast", package="nowcast")}
+#' \code{vignette("nowcast", package="attrib")}
 #'
 #' @param data_aggregated Aggregated dataset from the function npowcast_aggregate
 #' @param offset offset
@@ -466,7 +468,7 @@ nowcast <- function(
   # # nowcast_correction_sim_fn = nowcast_correction_sim_quasipoisson
   # offset = "log(pop)"
 
-  data <- data.table(data_aggregated)
+  data <- as.data.table(data_aggregated)
   n_week_start <- n_week_training + n_week_adjusting
   date_0 <- as.Date(cut(date_0, "week"))
 
@@ -510,8 +512,8 @@ nowcast <- function(
   data[,temp_variable:=NULL]
 
 
-  data[, yrwk:= isoyearweek(cut_doe)]
-  data_sim[, yrwk:= isoyearweek(cut_doe)]
+  data[, yrwk:= isoyearweek_temp(cut_doe)]
+  data_sim[, yrwk:= isoyearweek_temp(cut_doe)]
 
 
   col_order <- c(c("yrwk", "location_code", "n_death", "ncor"),

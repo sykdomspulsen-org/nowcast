@@ -81,9 +81,9 @@ gen_fake_attrib_data <- function(n_locations = 11) {
   setDT(skeleton)
 
   # need to update packages to the latest version
-  skeleton[, year := isoyear_n(date)]
-  skeleton[, week := isoweek_n(date)]
-  skeleton[, yrwk := isoyearweek(date)]
+  skeleton[, year := isoyear_n_temp(date)]
+  skeleton[, week := isoweek_n_temp(date)]
+  skeleton[, yrwk := isoyearweek_temp(date)]
   skeleton[, x := x(week)]
   skeleton[, season := season(yrwk)]
 
