@@ -76,7 +76,6 @@ fit_attrib <- function(
     fit_fix <- stats::lm(stats::as.formula(paste0(response, "~", fixef, "+ offset(", offset, ")")), data = data)
   }
 
-  ########## GLMER DOES NOT WORK
   if(dist_family == "negbin"){
     fit <- lme4::glmer.nb(stats::as.formula(formula), data = data)
   }else{

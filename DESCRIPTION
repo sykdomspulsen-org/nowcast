@@ -24,9 +24,7 @@ LazyData: true
 Imports: data.table,
     magrittr,
     purrr,
-    stringr,
     ggplot2, 
-    glue,
     pbs,
     dlnm,
     lubridate,
@@ -44,6 +42,8 @@ Suggests: testthat,
     knitr,
     rmarkdown,
     rstudioapi,
-    glue
+    glue,
+    fhidata,
+    attrib
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
