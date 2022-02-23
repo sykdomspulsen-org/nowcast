@@ -1,4 +1,3 @@
-
 #' Cleaned fake data for mortality registration
 #'
 #' @format

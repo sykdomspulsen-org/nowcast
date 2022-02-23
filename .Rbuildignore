@@ -1,3 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^docs$
+^_pkgdown\.yml$
+^license\.md$
+^cran-comments\.md$
 Makefile
