@@ -222,3 +222,11 @@ gen_fake_attrib_data <- function(n_locations = 11) {
   locations_current <- locations[1:n_locations]
   return(skeleton[location_code %in% locations_current])
 }
+
+
+
+# gen_fake_death_ili <- function(){
+#
+# }
+
+

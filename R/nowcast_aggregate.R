@@ -79,10 +79,19 @@
 #' }
 "data_fake_nowcasting_county_aggregated"
 
+
+
+
+
+
+
+
+
+
 #' Aggregation of data for nowcasting
 #'
 #' Aggregates mortality data to a weekly basis.
-#' Where the percentiles and number of mortalities obtained after every week up to n_week is also given.
+#' Where the percentiles and number of deaths obtained after every week up to n_week is also given.
 #' For more details see the help vignette:
 #'
 #' \code{vignette("intro", package="nowcast")}
@@ -127,14 +136,15 @@ nowcast_aggregate <- function(
 
 
   ##### for developing
-  #
-  # data <- gen_fake_death_data_county()
-  # #data <- nowcast::data_fake_nowcasting_raw
-  # aggregation_date <- as.Date("2019-12-31")
-  # n_week <- 6
-  # pop_data <- fhidata::norway_population_by_age_cats(cats = list(c(1:120)))[location_code %in% unique(fhidata::norway_locations_b2020$county_code)]
-  # #pop_data <- NULL
-  ### check of parameters ----
+
+  data <- nowcast::data_fake_nowcasting_raw
+  aggregation_date <- as.Date("2019-12-31")
+  n_week <- 6
+  pop_data <- fhidata::norway_population_by_age_cats(cats = list(c(1:120)))[location_code %in% unique(fhidata::norway_locations_b2020$county_code)]
+
+
+
+  # check of parameters ----
 
   if (! "doe" %in% colnames(data)){
     stop("The dataset does not have the correct column names, doe is missing")
@@ -144,58 +154,86 @@ nowcast_aggregate <- function(
     stop("The dataset does not have the correct column names, dor is missing")
   }
   if (! "location_code" %in% colnames(data)){
-    stop("The dataset does not have the correct column names, location_Code is missing")
+    stop("The dataset does not have the correct column names, location_code is missing")
   }
 
   if (! "n_week" > 1){
     stop("n_week is to small" )
   }
 
-  #should perhaps have a check for max length as well.
 
-  ### cleaning ----
-  d <- data.table::as.data.table(data)
+  d <- data.table(data)
   d <- d[, .(doe, dor, location_code)]
-  d <- d[dor < as.Date(cut(aggregation_date, "week"))] # we erase all date for incompleate weeks.
+
+
+  # count weekly total ----
+  # cut(aggregation_date + 1:7, 'day')
+  # cut(aggregation_date + 1:7, 'week') # 2 levels (weeks)
+  # fhidata::days[mon == '2020-01-06']
+
+  # only keep part before aggregation date
+  # convert aggre_date into monday of that week
+  # e.g. 2020-12-31 is a tuesday, so it'll be converted to 12-30 (monday)
+
+
+  d <- d[dor < as.Date(cut(aggregation_date, "week"))]
   d <- d[doe < as.Date(cut(aggregation_date, "week"))]
   d[, cut_doe := as.Date(cut(doe, "week"))]
+
+  # cut_doe is the monday of that week
+  # fhidata::days[mon == '2018-01-01']
+  # fhidata::days[mon == '2019-12-23']
+  # could be useful to attach isoyearweek too
+
   d <- d[order(doe, dor)]
 
-  first_date <- as.Date(cut(d[1,]$doe, "week"))
-  last_date <- as.Date(cut(aggregation_date -7, "week"))
 
-  # count deaths
-  d_death <- d[ , .(
+  # count total deaths (ever registered)
+  # per week per location
+  d_death_week_location <- d[ , .(
     "n_death" = .N
   ), keyby = .(
     cut_doe,
     location_code
   )]
 
-  d[ d_death,
+  # combine with dor
+  d[ d_death_week_location,
      on = c("cut_doe","location_code"),
      n_death := n_death]
 
   retval <- vector("list", length = n_week)
-  d_within_week <- d[, .(cut_doe, location_code)]
+  # d_within_week <- d[, .(cut_doe, location_code)]
 
-  # Count deaths within week
+
+
+
+  # count weekly registered ----
+  # n_week is the weeks to ??
+  n_week <- 6
+  # i <- 2
+
   for ( i in 1:n_week){
     temp_d <- d[, .(cut_doe, n_death, location_code)]
-    temp <- d[dor < (as.Date(cut_doe) + i*7), .(
-      temp_outcome_n = .N,
-      temp_outcome_p = sum(dor < (as.Date(cut_doe) + i*7))/n_death,
-      n_death = n_death),
+
+    # e.g. i = 1 means within one weeks after the event,
+    # event is registered
+
+    d_registered_within_i_week <- d[dor < (as.Date(cut_doe) + i*7), .(
+      n_death_registered = .N,
+      p_death_registered = sum(dor < (as.Date(cut_doe) + i*7))/n_death,
+      n_death_total = n_death),
       keyby = .(cut_doe, location_code)]
 
     temp_d[,paste0("n0_", (i-1)) := 0]
     temp_d[,paste0("p0_", (i-1)) := 0]
-    temp_d[temp, on= .(cut_doe, location_code),  paste0("n0_", (i-1)) := temp_outcome_n]
-    temp_d[temp, on= .(cut_doe, location_code),  paste0("p0_", (i-1)) := temp_outcome_p]
+    temp_d[d_registered_within_i_week, on= .(cut_doe, location_code),  paste0("n0_", (i-1)) := n_death_registered]
+    temp_d[d_registered_within_i_week, on= .(cut_doe, location_code),  paste0("p0_", (i-1)) := p_death_registered]
 
+    # not sure about merging back to the original super long one
 
-    retval[[i ]] <- as.data.frame(temp_d)
-
+    retval[[i ]] <- temp_d
+    cat(paste(i, 'done \n'))
   }
 
   d_within_week <- cbind.data.frame(retval)
@@ -203,26 +241,29 @@ nowcast_aggregate <- function(
   d_within_week <- as.data.table(subset(d_within_week, select = unique(colnames(d_within_week))))
 
 
-  date_0 <- as.Date(cut(aggregation_date, "week"))
-  d_corrected <- d_within_week[, .(cut_doe,location_code, n_death, n0_0, p0_0)]
 
 
-  # expand so all dates are present
 
-  dates <- seq.Date(
-    from = first_date,
-    to = last_date,
-    by = 7
-  )
-  # THIS COULD CAUSE SOME TROUBLE IF THE TIME PERIOD IS VERY LONG.
+  # all dates, all locations ----
+  # expand all dates and locations
+  # prevent missing weeks in raw data
+  first_date <- d$cut_doe[1]
+  last_date <- d$cut_doe[nrow(d)]
 
-  dates <- as.Date(cut(dates, "week"))
+  # dates <- unique(d$cut_doe)
+  dates <- seq.Date(from = first_date,
+                    to = last_date,
+                    by = 7)
+  locations <- unique(d$location_code)
+
   all_dates_locations <- expand.grid(
     cut_doe = dates,
-    location_code = unique(d_within_week$location_code)
+    location_code = locations
   )
 
+  # merge with previous step
   test <- merge(d_within_week, all_dates_locations, on = c("cut_doe, location_code"), all = TRUE)
+
   for(i in 0:n_week){
     test[is.na(n_death), paste0("n0_",(i)) := 0]
   }
@@ -230,13 +271,15 @@ nowcast_aggregate <- function(
   test[is.na(n_death), n_death := 0]
   d_within_week <- test
   d_corrected <- d_within_week[, .(cut_doe,location_code, n_death, n0_0, p0_0)]
-  # Merge together so all dates are present
+  date_0 <- as.Date(cut(aggregation_date, "week")) # monday of aggregation
+  # this is actually UNcorrected (%registered within one week)
 
-  # d_corrected <- merge(d_corrected, all_dates_locations, on = c("cut_doe, location_code"), all = TRUE)
-  # d_corrected[is.na(n_death), n0_0 := 0]
-  # d_corrected[is.na(n_death), p0_0 := 0]
-  # d_corrected[is.na(n_death), n_death := 0]
 
+
+
+
+
+  # NA adjustments ----
 
   # insert NA where we do not have data
   for ( i in 2:n_week){
