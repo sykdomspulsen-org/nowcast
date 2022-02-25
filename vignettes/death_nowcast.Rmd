@@ -29,3 +29,49 @@ library(magrittr)
 
 
 
+The goal of nowcast is to predict the present. This is also called delay adjustment or correction, as registration delay can underestimate the real number of outcomes of interest. This is particularly important in an outbreak. 
+
+Nowcast corrections are usually compared with a baseline. If the corrected mortality deviates from the baseline by much, there is reason to look into possible outbreaks. 
+
+
+
+
+## Models 
+
+In this package, we implement two models: 
+
+- quasi-poisson 
+- negative binomial mixed effect model (nbmm)
+
+
+Both models have the following **fixed effects**:  
+
+- seasonality expressed as $sin$ and $cos$ (details to be filled in)
+- year trend 
+- historical data (details to be filled in)
+
+
+
+The nbmm model is to account for the **random effect** of different locations. 
+
+
+An **offset** for population (log(pop)) can be included as well. 
+
+
+
+
+## Nowcast correction for reporting delay
+
+One correction for each week of adjustment (usually the last 6 weeks before the aggregation date) is made.
+
+
+
+
+## Nowcast simulation 
+
+Posterior distribution is drawn via `arm::sim`. 
+
+
+
+
+
