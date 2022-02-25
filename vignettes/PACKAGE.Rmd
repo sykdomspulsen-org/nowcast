@@ -1,7 +1,7 @@
 ---
 title: "Introduction to nowcast"
-author: "Richard White"
-date: "2020-02-17"
+author: "Chi Zhang"
+date: "2022-02-23"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introduction to nowcast}
@@ -16,4 +16,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Concept 
+This package is about nowcasting mortality surveillance data. 
+
+
+
+
+
+

@@ -123,6 +123,8 @@ nowcast_aggregate <- function(
   cut_doe <- NULL
   n_death <- NULL
   temp_outcome <- NULL
+  n_death_registered <- NULL
+  p_death_registered <- NULL
   n0_0 <- NULL
   p0_0 <- NULL
   temp_variable_n <- NULL
@@ -137,10 +139,10 @@ nowcast_aggregate <- function(
 
   ##### for developing
 
-  data <- nowcast::data_fake_nowcasting_raw
-  aggregation_date <- as.Date("2019-12-31")
-  n_week <- 6
-  pop_data <- fhidata::norway_population_by_age_cats(cats = list(c(1:120)))[location_code %in% unique(fhidata::norway_locations_b2020$county_code)]
+  # data <- nowcast::data_fake_nowcasting_raw
+  # aggregation_date <- as.Date("2019-12-31")
+  # n_week <- 6
+  # pop_data <- fhidata::norway_population_by_age_cats(cats = list(c(1:120)))[location_code %in% unique(fhidata::norway_locations_b2020$county_code)]
 
 
 

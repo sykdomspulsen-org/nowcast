@@ -1,10 +1,10 @@
 ---
-title: "Death Registration data"
+title: "Aggregation of mortality data"
 output: rmarkdown::html_vignette
 author: "Chi Zhang"
 date: "2022-02-23"
 vignette: >
-  %\VignetteIndexEntry{Death Registration data}
+  %\VignetteIndexEntry{Aggregation of mortality data}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
