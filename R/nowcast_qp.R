@@ -35,6 +35,8 @@ nowcast_correction_fn_quasipoisson <- function(data, n_week_adjusting, offset, d
   # n_week_adjusting <- 6
   # offset = "log(pop)"
 
+  # weekly data
+
   # Lag the data
   # does not need a for loop
   # created a one-week lag in n (no p)
@@ -52,7 +54,8 @@ nowcast_correction_fn_quasipoisson <- function(data, n_week_adjusting, offset, d
   # correction
   # For each week in n_week_adjusting model a correction
   # data up to 6 weeks ago are training
-  # data within 6 weeks are predict
+  # data within 6 weeks are predict (actually here only 4 weeks)
+  # why n0_i?? what is this 0?
 
   data_train <- data[cut_doe <= (date_0 - n_week_adjusting*7) ]
   data_predict <- data[cut_doe > (date_0 - n_week_adjusting*7) ]
@@ -89,6 +92,13 @@ nowcast_correction_fn_quasipoisson <- function(data, n_week_adjusting, offset, d
   retval$data<- data
   retval$n_week_adjusting <- n_week_adjusting
   retval$fit <- fit_vec
+
+  # _____ TO DO: _____ ====
+  # 1. remove unnecessary for loops
+  # 2. data processing (shifting, training/test split) take out
+  # 3.
+
+
 
   return(retval)
 }
