@@ -27,9 +27,6 @@
 #' @param aggregation_date Date of aggregation
 #' @param max_week_delay Maximum weeks of delay taken into account. Must be greater than 2.
 #' @param keep_weekly_prob Binary. If True, the final aggregated data has weekly reporting percentile.
-#' @return Aggregated weekly data with number of events happened each week and reporting delay distribution
-#'
-#'
 #' @examples
 #'
 #' data <- nowcast::data_fake_nowcasting_raw
@@ -38,7 +35,10 @@
 #'
 #' weekly_counts <- count_weekly_reporting(data, aggregation_date, max_week_delay)
 #'
-#' weekly_counts_p <- count_weekly_reporting(data, aggregation_date, max_week_delay, keep_weekly_prob = T)
+#' weekly_counts_p <- count_weekly_reporting(data, aggregation_date, max_week_delay, keep_weekly_prob = TRUE)
+#' @return Aggregated weekly data with number of events happened each week and reporting delay distribution
+#'
+#'
 #' @export
 
 

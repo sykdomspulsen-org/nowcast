@@ -1,0 +1,118 @@
+---
+title: "Data aggregation and reporting delays"
+output: rmarkdown::html_vignette
+author: "Chi Zhang"
+date: "2022-02-23"
+vignette: >
+  %\VignetteIndexEntry{Data aggregation and reporting delays}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This document provides information on aggregation death registration data. 
+
+NOTE: the data example here are **simulated**, not real. 
+
+```{r setup}
+library(nowcast)
+library(magrittr)
+```
+
+## Individual level daily mortality reporting
+
+The raw data typically has **DOE** (date of event/death), **DOR** (date of registration). Sometimes it also contains additional information such as location and age.
+
+```{r}
+data_fake_nowcasting_raw
+```
+
+
+
+
+
+
+## Weekly aggregation by location
+
+We need to specify a time point until when we stop counting. This is usually the last or latest date available. 
+
+The time unit here is **week**. The events (deaths) happened in a natural week do not necessarily get counted within the same week. Therefore we create a data table that counts the number of events:
+
+- happened in this week
+- happened and were registered within this week (lag 0)
+- happened and were registered within this and the next week (lag 1)
+- ...
+
+The number are cumulatives.
+
+
+These two concepts are different: 
+- deaths happened and registered within the same week
+- deaths registered in this week (mixture of current and delayed registrations from previous weeks)
+
+
+For convenience, we only count the events on a weekly basis, i.e. if an event happened on a Sunday and is counted on the next Monday, the **delay in week** (within the next week) is used, rather than the delay in day (one day delay). 
+
+In the future version, we might investigate this in detail.
+
+
+
+### Without weekly percentile 
+
+```{r}
+weekly_counts <- count_weekly_reporting(
+  data = data_fake_nowcasting_raw, 
+  aggregation_date = as.Date('2020-01-01'), 
+  max_week_delay = 4)
+weekly_counts
+```
+
+
+
+
+### With weekly percentile 
+
+If desired, weekly percentile of the cumulative registrations can be easily computed. This is used for explorative analysis so that we can see how much percent of events are registered completely.
+
+```{r}
+weekly_counts_p <- count_weekly_reporting(
+  data = data_fake_nowcasting_raw, 
+  aggregation_date = as.Date('2020-01-01'), 
+  max_week_delay = 4, 
+  keep_weekly_prob = T)
+weekly_counts_p
+```
+
+
+
+
+
+
+
+## Old aggregation data
+
+The old version of weekly aggregation is kept here for reference
+
+```{r}
+data_fake_nowcasting_aggregated
+```
+
+
+
+Another data (nation, simulated) looks like this. It is kept for now because `fit_attrib()` requires it as an example.
+
+
+```{r}
+data_fake_nation
+```
+
+
+

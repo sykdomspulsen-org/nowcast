@@ -22,18 +22,6 @@ count_weekly_reporting(
 }
 \value{
 Aggregated weekly data with number of events happened each week and reporting delay distribution
-
-
-#' @examples
-
-data <- nowcast::data_fake_nowcasting_raw
-data[doe < as.Date("2019-01-01")]
-aggregation_date <- as.Date("2020-01-01")
-max_week_delay <- 4
-
-weekly_counts <- count_weekly_reporting(data, aggregation_date, max_week_delay)
-
-weekly_counts_p <- count_weekly_reporting(data, aggregation_date, max_week_delay, keep_weekly_prob = T)
 }
 \description{
 Aggregates daily mortality reporting data to a weekly basis.
@@ -41,4 +29,14 @@ For more details see the help vignette:
 }
 \details{
 \code{vignette("intro", package="nowcast")}
+}
+\examples{
+
+data <- nowcast::data_fake_nowcasting_raw
+aggregation_date <- as.Date("2020-01-01")
+max_week_delay <- 4
+
+weekly_counts <- count_weekly_reporting(data, aggregation_date, max_week_delay)
+
+weekly_counts_p <- count_weekly_reporting(data, aggregation_date, max_week_delay, keep_weekly_prob = TRUE)
 }
