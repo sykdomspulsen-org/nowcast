@@ -326,13 +326,6 @@ nowcast_aggregate <- function(
 
 
 
-  # _____ TO DO: _____ ====
-  # 1. make p0_i optional. this is not useful for actual modeling
-  # 2. rename n0_i into something more intuitive
-  # 3. cut_doe: rename, make intuitive
-  # 4. can also split into two functions, one aggregate, one compute delay distribution
-
-
 
 
   retval <- d_corrected

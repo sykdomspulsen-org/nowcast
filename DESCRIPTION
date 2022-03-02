@@ -44,6 +44,7 @@ Suggests: testthat,
     rstudioapi,
     glue,
     fhidata,
-    attrib
+    attrib, 
+    spltime
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
