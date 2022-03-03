@@ -1,4 +1,5 @@
 
+
 ### nowcast_correction_fn_quasipoisson ---- #
 
 #' Nowcast correction function using the quasipoisson distribution.
@@ -92,11 +93,6 @@ nowcast_correction_fn_quasipoisson <- function(data, n_week_adjusting, offset, d
   retval$data<- data
   retval$n_week_adjusting <- n_week_adjusting
   retval$fit <- fit_vec
-
-  # _____ TO DO: _____ ====
-  # 1. remove unnecessary for loops
-  # 2. data processing (shifting, training/test split) take out
-  # 3.
 
 
 
