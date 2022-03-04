@@ -1,0 +1,36 @@
+---
+title: "Nowcast for delay correction"
+output: rmarkdown::html_vignette
+author: "Chi Zhang"
+date: "2022-02-25"
+vignette: >
+  %\VignetteIndexEntry{Nowcast for delay correction}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This document provides information on implementation details of nowcast delay correction 
+
+NOTE: the data example here are **simulated**, not real. 
+
+```{r setup}
+library(nowcast)
+library(magrittr)
+```
+
+
+
+
+
+
+
+
