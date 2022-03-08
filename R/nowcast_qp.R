@@ -121,10 +121,10 @@ nowcast_correction_fn_quasipoisson <- function(data, n_week_adjusting, offset, d
 #' n_week_start <- n_week_adjusting + n_week_train
 #' date_0 <- data[nrow(data),]$cut_doe #last date in the dataset, assume the dataset is ordered.
 #' data <- data[cut_doe >= (date_0 - n_week_start*7 + 1), ]
-#' nowcast_correction_object <- nowcast_correction_fn_quasipoisson(data,
-#'    n_week_adjusting, offset = TRUE, date_0 )
-#' nowcast_sim <- nowcast_correction_sim_quasipoisson(nowcast_correction_object,
-#'      offset = "log(pop)", date_0= date_0)
+# nowcast_correction_object <- nowcast_correction_fn_quasipoisson(data,
+#     n_week_adjusting, offset = TRUE, date_0 )
+# nowcast_sim <- nowcast_correction_sim_quasipoisson(nowcast_correction_object,
+#       offset = "log(pop)", date_0= date_0)
 #' @export
 nowcast_correction_sim_quasipoisson <- function(nowcast_correction_object, offset, n_sim = 500, date_0){
   # only corrects n_week_Adjusting weeks! not +1
@@ -144,7 +144,7 @@ nowcast_correction_sim_quasipoisson <- function(nowcast_correction_object, offse
   data <- nowcast_correction_object$data
   n_week_adjusting <- nowcast_correction_object$n_week_adjusting[[1]]
 
-  ##simulations ---- #
+  ## simulations ---- #
 
   data_train <- data[cut_doe < (date_0 - n_week_adjusting*7) ]
   data_predict <- data[cut_doe >= (date_0 - n_week_adjusting*7) ]
