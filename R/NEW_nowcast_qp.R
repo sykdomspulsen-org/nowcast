@@ -160,9 +160,17 @@ correction_fn_quasipoisson <- function(data,
 
 
 
-corobj_qp <- correction_fn_quasipoisson(data = data_fake_nowcasting_county_aggregated,
+corobj_qp <- correction_fn_quasipoisson(data = data_fake_nowcasting_county_aggregated[location_code == "county03"],
                                         week_adjust = 6,
                                         keep_offset = T)
+
+corobj_qp
+
+names(corobj_qp)
+# 1. data
+# 2. week_adjust
+# 3. fit
+# 4. n_corrected (matrix of ncor_0, ncor_1, ....)
 
 
 
