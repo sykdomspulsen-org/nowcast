@@ -13,6 +13,16 @@ correction_fn_quasipoisson <- function(data,
                                        keep_offset = T){
 
 
+  p0_0 <- NULL
+  p0_1 <- NULL
+  p0_2 <- NULL
+  p0_3 <- NULL
+  p0_4 <- NULL
+  p0_5 <- NULL
+  cut_doe <- NULL
+  n_rows <- NULL
+
+
   # for developping
   # data<- data.table::as.data.table(data_fake_nowcasting_county_aggregated)
   # data <- data[location_code == "county03"]
@@ -158,15 +168,15 @@ correction_fn_quasipoisson <- function(data,
 }
 
 
+# data_fake_nowcasting_county_aggregated
 
-
-corobj_qp <- correction_fn_quasipoisson(data = data_fake_nowcasting_county_aggregated[location_code == "county03"],
-                                        week_adjust = 6,
-                                        keep_offset = T)
-
-corobj_qp
-
-names(corobj_qp)
+# corobj_qp <- correction_fn_quasipoisson(data = data_fake_nowcasting_county_aggregated[location_code == "county03"],
+#                                         week_adjust = 6,
+#                                         keep_offset = T)
+#
+# corobj_qp
+#
+# names(corobj_qp)
 # 1. data
 # 2. week_adjust
 # 3. fit
@@ -179,6 +189,7 @@ correction_sim_quasipoisson <- function(nowcast_correction_object, offset, n_sim
   n_death <- NULL
   sim_value <- NULL
   cut_doe <- NULL
+  n_rows <- NULL
 
 
 
