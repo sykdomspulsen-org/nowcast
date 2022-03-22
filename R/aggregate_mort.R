@@ -330,5 +330,74 @@ nowcast_aggregate <- function(
 
   retval <- d_corrected
 
+  class(retval) <- unique(c("nowcast_aggregate_data_v1", class(retval)))
+
   return (retval)
 }
+
+
+#' Evaluate aggregate data
+#'
+#' @description
+#' Tries to impute missing values by performing smart assignment on all columns that are missing data.
+#' E.g. if \code{location_code='norge'} then we know that \code{granularity_geo='nation'}.
+#'
+#' @section nowcast_aggregate_data_v1:
+#' The **columns in bold** will be used to impute the listed columns.
+#'
+#' **location_code**:
+#' - granularity_geo
+#' - country_iso3
+#'
+#' **isoyear** (when `granularity_time=="isoyear"`):
+#' - isoweek
+#' - isoyearweek
+#' - season
+#' - seasonweek
+#' - calyear
+#' - calmonth
+#' - calyearmonth
+#' - date
+#'
+#' **isoyearweek** (when `granularity_time=="isoweek"`):
+#' - isoyear
+#' - isoweek
+#' - season
+#' - seasonweek
+#' - calyear
+#' - calmonth
+#' - calyearmonth
+#' - date
+#'
+#' **date** (when `granularity_time=="day"`):
+#' - isoyear
+#' - isoweek
+#' - isoyearweek
+#' - season
+#' - seasonweek
+#' - calyear
+#' - calmonth
+#' - calyearmonth
+#'
+#' With regards to the time columns, `granularity_time` takes precedence over everything.
+#' If `granularity_time` is missing, then we try to impute `granularity_time` by seeing if
+#' there is only one time column with non-missing data. Due to the multitude of time columns,
+#' `granularity_time` is an extremely important column and should always be kept with valid values.
+#'
+#' @param x An object of type nowcast_aggregate_data_v1 created by \code{\link{nowcast_aggregate}}
+#' @param ... Not used.
+#' @export
+evaluate_aggregate_data <- function(x, ...) {
+  UseMethod("evaluate_aggregate_data", x)
+}
+
+#' @method evaluate_aggregate_data nowcast_aggregate_data_v1
+#' @export
+evaluate_aggregate_data.nowcast_aggregate_data_v1 <- function(x, ...) {
+
+  # allows us to print
+  data.table::shouldPrint(x)
+
+  return(invisible(x))
+}
+
