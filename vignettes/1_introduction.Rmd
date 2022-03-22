@@ -1,0 +1,111 @@
+---
+title: "Introduction to nowcast"
+author: "Chi Zhang"
+date: "2022-02-23"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to nowcast}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This package is about nowcasting mortality surveillance data. 
+
+
+The goal of nowcast is to predict the present. This is also called delay adjustment or correction, as registration delay can underestimate the real number of outcomes of interest. This is particularly important in an outbreak. 
+
+Nowcast corrections are usually compared with a baseline. If the corrected mortality deviates from the baseline by much, there is reason to look into possible outbreaks. 
+
+
+
+
+# Plan  
+
+These are the planned content for this package.
+
+## 1. mortality reporting data simulation
+
+Purpose: generate realistic datasets for mortality reporting. We do not have the possibility to share and distribute real-life mortality data from the official registry. However, we simulate it based on our knowledge of the real data. 
+
+The data simulator can be used for two geographic levels: 
+- county level
+- national level 
+
+We allow the following specifications in the **basic** version: 
+
+- reporting delay pattern 
+- pseudo-mortality counts based on historical data
+
+
+More **advanced** simulator will allow user to specify
+
+- population size and mortality rate 
+- excess mortality due to disease (e.g. influenza)
+- seasonality 
+
+
+
+
+
+
+
+## 2. aggregation 
+
+This functionality is important for computing the nowcast
+
+
+
+## 3. nowcast delay adjustment 
+
+Models (Bayesian regression framework) 
+- negative binomial 
+- negative binomial with random effects (each county)
+
+Assessment methods are included.
+
+
+
+## 4. baseline construction
+
+
+Both models and assessment methods are included
+
+
+
+
+
+## 5. Results reporting
+
+Used for convenient and consistent reporting 
+
+
+## 6. visualisation tools
+
+For plots: epicurves, scatterplots etc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
