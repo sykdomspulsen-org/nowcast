@@ -1,0 +1,90 @@
+---
+title: "Simulating mortality data"
+output: rmarkdown::html_vignette
+author: "Chi Zhang"
+date: "2022-03-31"
+vignette: >
+  %\VignetteIndexEntry{Simulating mortality data}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This document provides information on how to simulate mortality data. There are two kinds of mortality data: event and registration.
+
+```{r setup}
+library(nowcast)
+library(magrittr)
+```
+
+# Mortality event simulation
+
+We simulate mortality events (deaths) based on real-life mortality pattern in Norway. Each year there are roughly 43000 deaths in Norway (0.8%) in total, from 11 counties. There are seasonal variations as well: winter seasons have more deaths than the other seasons.
+
+We simulate **daily deaths for each county**. Afterwards, it is convenient to aggregate by time (weekly, quarterly, yearly) and into national total. 
+
+
+
+
+## Models 
+
+#### Simulate directly from distribution 
+
+There are two models to choose from: 
+
+- Poisson distribution 
+- negative binomial distribution. 
+
+
+
+
+#### Simulate from model to include seasonality
+
+Model 
+
+
+Practical consideration: match real dates with season. 
+
+
+
+
+## Examples
+
+We include three realistic simulations based on counties in Norway. 
+
+
+
+
+
+
+
+
+
+# Mortality registration simulation
+
+Registration, or reporting is an important aspect in mortality data. Different reporting systems can have different delays after death event. For example, deaths that are registered electronically have shorter reporting delays (usually within days) than paper-based reports. Some deaths require post-morten (autopsy) to determine the cause of death, and can therefore take longer. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
