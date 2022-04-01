@@ -42,7 +42,7 @@ There are two models to choose from:
 
 - Poisson distribution 
 - negative binomial distribution. 
-
+- normal distribution approximation (rounded to integer, truncated at 0)
 
 
 

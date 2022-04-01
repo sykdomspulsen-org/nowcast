@@ -77,13 +77,12 @@ Assessment methods are included.
 ## 4. baseline construction
 
 
-Both models and assessment methods are included
+This functionality will be in our new package, `splalert`
 
 
 
 
-
-## 5. Results reporting
+## 5. results reporting
 
 Used for convenient and consistent reporting 
 
