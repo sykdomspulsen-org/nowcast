@@ -6,6 +6,13 @@
 # for daily, a big county has around 25 deaths
 # county03 has 10, county54 has 6
 
+# example:
+# death_sim <- simulate_daily_death_event(
+#   start_date = '2018-01-01',
+#   end_date = '2019-12-31',
+#   model = 'poisson',
+#   param_list = list(lambda = 25))
+# death_sim
 
 
 simulate_daily_death_event <- function(start_date,
@@ -17,8 +24,11 @@ simulate_daily_death_event <- function(start_date,
   # in the future, add season argument
   set.seed(1)
 
-  # start_date <- as.Date("2018-01-01")
-  # end_date <- as.Date("2019-12-31")
+  # start_date <- '2018-01-01'
+  # end_date <- '2019-12-31'
+
+  start_date <- as.Date(start_date)
+  end_date <- as.Date(end_date)
 
   # model <- 'poisson'
   # param_list <- list(lambda = 25)
@@ -77,6 +87,50 @@ simulate_daily_death_event <- function(start_date,
 }
 
 
+# simulate registration delay ----
+# this is based on individual level date
+
+
+# death_sim <- simulate_daily_death_event(
+#   start_date = '2018-01-01',
+#   end_date = '2019-12-31',
+#   model = 'poisson',
+#   param_list = list(lambda = 25))
+
+
+# death_sim
+
+# x <- simulate_registration(death_data = death_sim)
+# x
+#
+# x <- simulate_registration(death_data = death_sim, r = 10, p = 0.7)
+# x$delay_days %>% hist
+
+
+simulate_registration <- function(death_data, r= NULL, p = NULL){
+
+  delay_days <- NULL
+  date_reg <- NULL
+
+  # death_data <- death_sim
+  # simulate individual delay (days) of registration
+  # default: 10 days on average
+  delay_days <- gen_int_daily_delay_nb(n = nrow(death_data),
+                                       r = 10, p = 0.5)
+
+  # attach
+  death_data[, delay_days := delay_days]
+  death_data[, date_reg := as.Date(date + delay_days)]
+
+  return(death_data)
+
+}
+
+
+
+
+
+# _________ ----
 # internal models -----
 
 gen_int_daily_death_event_nb <- function(n, r, p){
@@ -122,6 +176,24 @@ gen_int_daily_death_event_norm_approx <- function(n, mu, sigma){
 
 
 
+
+
+
+# delay
+
+gen_int_daily_delay_nb <- function(n, r = 10, p = 0.5){
+
+  # the delay structure looks like nb rather than poisson
+  # some have very long tails, but in the simulation we don't need them
+
+  # default: r = 10, p = 0.5 gives mean 10
+  # other plausible values of p are between 0.4 to 0.9
+
+  delay_vec <- stats::rnbinom(n = n, size = r, prob = p)
+  # rnbinom(n = 1000, size = 10, prob = 0.5) %>% hist
+
+  return(delay_vec)
+}
 
 
 
