@@ -25,7 +25,7 @@ library(nowcast)
 library(magrittr)
 ```
 
-# Mortality event simulation
+# Simulate mortality event
 
 We simulate mortality events (deaths) based on real-life mortality pattern in Norway. Each year there are roughly 43000 deaths in Norway (0.8%) in total, from 11 counties. There are seasonal variations as well: winter seasons have more deaths than the other seasons.
 
@@ -41,41 +41,87 @@ We simulate **daily deaths for each county**. Afterwards, it is convenient to ag
 There are two models to choose from: 
 
 - Poisson distribution 
-- negative binomial distribution. 
 - normal distribution approximation (rounded to integer, truncated at 0)
 
+Negative binomial distribution is also implemented, yet it is not ready for use.
 
 
 #### Simulate from model to include seasonality
 
-Model 
-
-
-Practical consideration: match real dates with season. 
-
-
+(tbd)
 
 
 ## Examples
 
-We include three realistic simulations based on counties in Norway. 
+use poisson model with 25 daily expected events
+
+```{r}
+# specify time period
+start_date <- '2018-01-01'
+end_date <- '2019-12-31'
+
+# use poisson model with 25 daily expected events
+death_events_poi <- simulate_daily_death_event(
+  start_date = start_date, 
+  end_date = end_date, 
+  model = 'poisson', 
+  param_list = list(lambda = 25)
+)
+
+death_events_poi
+```
+
+
+
+Use Gaussian model (approximation) with mean 25 and standard deviation 2: 
+
+```{r}
+death_events_norm <- simulate_daily_death_event(
+  start_date = start_date, 
+  end_date = end_date, 
+  model = 'norm_approx', 
+  param_list = list(mu = 25, sigma = 2)
+)
+
+death_events_norm
+```
+
+
+
+Count daily death events (with the possibility to visualize)
+
+```{r}
+death_count_poi <- death_events_poi[, list(n_event = .N), by = date]
+death_count_poi
+# death_count_norm <- death_events_norm[, list(n_event = .N), by = date]
+```
 
 
 
 
 
 
-
-
-
-# Mortality registration simulation
+# Simulate mortality registration
 
 Registration, or reporting is an important aspect in mortality data. Different reporting systems can have different delays after death event. For example, deaths that are registered electronically have shorter reporting delays (usually within days) than paper-based reports. Some deaths require post-morten (autopsy) to determine the cause of death, and can therefore take longer. 
 
 
 
+```{r}
+# use the simulated death event data from the poisson model
+death_register <- simulate_registration(death_data = death_events_poi)
 
+print(death_register)
 
+hist(death_register$delay_days)
+```
+
+```{r}
+# different parameters 
+death_register2 <- simulate_registration(death_data = death_events_poi, r = 10, p = 0.9)
+
+hist(death_register2$delay_days)
+```
 
 
 
