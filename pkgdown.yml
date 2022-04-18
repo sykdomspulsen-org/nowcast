@@ -1,0 +1,12 @@
+pandoc: '2.13'
+pkgdown: 2.0.1
+pkgdown_sha: ~
+articles:
+  aggregation_and_delays: aggregation_and_delays.html
+  introduction: introduction.html
+  simulate_mortality_data: simulate_mortality_data.html
+last_built: 2022-04-18T13:56Z
+urls:
+  reference: https://docs.sykdomspulsen.no/nowcast/reference
+  article: https://docs.sykdomspulsen.no/nowcast/articles
+
